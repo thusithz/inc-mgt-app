@@ -1,0 +1,74 @@
+{
+  "private": true,
+  "name": "server",
+  "scripts": {
+    "start": "tsc && node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/src/app.js",
+    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' -r ts-node/register/transpile-only -r tsconfig-paths/register src/app.ts",
+    "build": "tsc",
+    "lint:staged": "lint-staged",
+    "typecheck": "tsc --noEmit",
+    "test": "jest --coverage --maxWorkers=4",
+    "eslint": "eslint src/**/*.ts --fix .",
+    "prettier": "prettier --write src/",
+    "prepare": "cd .. && husky install"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.2.0",
+    "jshint": "^2.13.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.7.8",
+    "mongoose-unique-validator": "^2.0.3",
+    "multer": "^1.4.2",
+    "prettier": "^2.6.1",
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "@hapi/joi": "^17.1.1",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/helmet": "^4.0.0",
+    "@types/jest": "^27.4.1",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/mongoose-unique-validator": "^1.0.5",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^17.0.23",
+    "@types/supertest": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/parser": "^5.17.0",
+    "eslint": "^8.12.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^16.2.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-import-helpers": "^1.2.1",
+    "husky": "^7.0.4",
+    "jest": "^27.5.1",
+    "jest-cli": "^27.5.1",
+    "lint-staged": "^12.3.7",
+    "nodemon": "^1.19.4",
+    "supertest": "^6.2.2",
+    "ts-jest": "^27.1.4",
+    "ts-node": "^10.7.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.6.3"
+  },
+  "lint-staged": {
+    "**/*.{ts}": [
+      "prettier --write",
+      "eslint src/**/*.ts --fix",
+      "jest --bail --findRelatedTests"
+    ],
+    "**/*.{json,ts}": [
+      "prettier --write"
+    ]
+  },
+  "engines": {
+    "node": ">=16.13.0"
+  }
+}
