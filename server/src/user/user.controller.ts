@@ -1,46 +1,43 @@
-import User from '@user/user.model';
 import bcrypt from 'bcryptjs';
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
+import User from './user.model';
 
 const JWT_KEY = process.env.JWT_SECRET || '';
 
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
+
   if (!errors.isEmpty()) {
-    throw errors;
+    return res.status(400).json({
+      success: false,
+      errors: errors.array(),
+    });
   }
-  console.log('signup Req');
-  const { username, email, password } = req.body;
+
+  const {
+    username, email, password, department,
+  } = req.body;
 
   let existingUser;
   try {
-    existingUser = await User.findOne({ email: email });
+    existingUser = await User.findOne({ email });
   } catch (err) {
-    // const error = new HttpError(
-    //   'Signing up failed, please try again later.',
-    //   500
-    // );
     return next(err);
   }
-  console.log('existingUser', existingUser);
+
   if (existingUser) {
-    // const error = new HttpError(
-    //   'User exists already, please login instead.',
-    //   422
-    // );
-    return next(new Error('User exists already, please login instead.'));
+    return res.status(400).json({
+      success: false,
+      error: 'User exists already, please login instead.',
+    });
   }
 
   let hashedPassword;
   try {
     hashedPassword = await bcrypt.hash(password, 12);
   } catch (err) {
-    // const error = new HttpError(
-    //   'Could not create user, please try again.',
-    //   500
-    // );
     return next(err);
   }
 
@@ -48,54 +45,43 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
     username,
     email,
     password: hashedPassword,
-    places: [],
+    department,
   });
 
   try {
     await createdUser.save();
   } catch (err) {
-    // const error = new HttpError(
-    //   'Signing up failed, please try again later.',
-    //   500
-    // );
     return next(err);
   }
 
-  let token;
-  try {
-    token = jwt.sign({ userId: createdUser.id, email: createdUser.email }, JWT_KEY, { expiresIn: '1h' });
-  } catch (err) {
-    // const error = new HttpError(
-    //   'Signing up failed, please try again later.',
-    //   500
-    // );
-    return next(err);
-  }
-
-  res.status(201).json({ userId: createdUser.id, email: createdUser.email, token: token });
+  res.status(201).json({ success: true, data: { userId: createdUser.id, email: createdUser.email } });
 };
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      errors: errors.array(),
+    });
+  }
   const { email, password } = req.body;
 
   let existingUser;
 
   try {
-    existingUser = await User.findOne({ email: email });
+    existingUser = await User.findOne({ email });
   } catch (err) {
-    // const error = new HttpError(
-    //   'Logging in failed, please try again later.',
-    //   500
-    // );
-    return next(err);
+    return res.status(400).json({
+      success: false,
+      error: 'Something went wrong',
+    });
   }
-
   if (!existingUser) {
-    // const error = new HttpError(
-    //   'Invalid credentials, could not log you in.',
-    //   403
-    // );
-    return next(new Error('Invalid credentials, could not log you in.'));
+    return res.status(400).json({
+      success: false,
+      error: 'Invalid credentials, could not log you in.',
+    });
   }
 
   let isValidPassword = false;
@@ -106,8 +92,10 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
   }
 
   if (!isValidPassword) {
-
-    return next(new Error('Invalid credentials, could not log you in.'));
+    return res.status(400).json({
+      success: false,
+      error: 'Invalid credentials, could not log you in.',
+    });
   }
 
   let token;
@@ -116,10 +104,12 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
   } catch (err) {
     return next(err);
   }
-
-  res.json({
-    username: existingUser.username,
-    email: existingUser.email,
-    token: token,
+  return res.status(200).json({
+    success: true,
+    data: {
+      username: existingUser.username,
+      email: existingUser.email,
+      token,
+    },
   });
 };

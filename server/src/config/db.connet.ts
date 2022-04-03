@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
@@ -11,9 +12,7 @@ export default () => {
   const connect = () => {
     mongoose
       .connect(db, { useNewUrlParser: true, useCreateIndex: true })
-      .then(() => {
-        return console.info(`Successfully connected to ${db}`);
-      })
+      .then(() => console.info(`Successfully connected to ${db}`))
       .catch((err) => {
         console.error('Error connecting to database :', err);
         return process.exit(1);

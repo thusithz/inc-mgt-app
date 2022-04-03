@@ -4,6 +4,7 @@
 const apiRoutes = {
   USER: {
     LOGIN: 'user/login',
+    SIGN_UP: 'user/signup',
   },
 };
 

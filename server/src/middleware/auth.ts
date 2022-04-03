@@ -9,7 +9,7 @@ const log: IDebugger = debug('middleware:JWT');
 const Auth = (req: Request, res: Response, next: NextFunction) => {
   log('JWT', JWT_KEY);
 
-  let token = req.headers.authorization?.split(' ')[1];
+  const token = req.headers.authorization?.split(' ')[1];
 
   if (token) {
     return jwt.verify(token, JWT_KEY, (error, decoded) => {
@@ -20,16 +20,14 @@ const Auth = (req: Request, res: Response, next: NextFunction) => {
           message: error,
           error,
         });
-      } else {
-        res.locals.jwt = decoded;
-        return next();
       }
-    });
-  } else {
-    return res.status(401).json({
-      message: 'Unauthorized',
+      res.locals.jwt = decoded;
+      return next();
     });
   }
+  return res.status(401).json({
+    message: 'Unauthorized',
+  });
 };
 
 export default Auth;

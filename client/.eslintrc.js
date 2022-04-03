@@ -31,7 +31,6 @@ module.exports = {
     'class-methods-use-this': 'off',
     'jsx-a11y/anchor-is-valid': 'warn',
     'func-names': 'off',
-    '@typescript-eslint/no-explicit-any': 'error',
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {

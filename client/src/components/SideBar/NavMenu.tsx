@@ -83,6 +83,7 @@ type NavMenuProps = {
       isExternal?: boolean;
       permissions?: string[];
     }>;
+    key?: number;
     permissions?: string[];
     iconSvg?: SvgIconComponent;
   };
@@ -140,10 +141,10 @@ const NavMenu: FC<NavMenuProps> = ({ menu, currentPath }) => {
         }}
       >
         <List classes={{ root: classes.navList }}>
-          {items.map(({ link, text, iconSvg: ItemSvg }, key) => (
+          {items.map(({ link, text, iconSvg: ItemSvg }, itemIndex) => (
             <>
               <NavListItem
-                key={key}
+                key={itemIndex}
                 link={link}
                 selected={link === currentPath}
                 text={text}

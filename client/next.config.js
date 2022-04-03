@@ -10,5 +10,6 @@ module.exports = {
   staticPageGenerationTimeout: 120,
   reactStrictMode: true,
   env: {
+    BASE_URL: process.env.BASE_URL
   },
 };

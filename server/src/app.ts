@@ -1,18 +1,21 @@
-import connetction from '@config/db.connet';
-import { errorHandler } from '@middleware/error';
-import { notFoundHandler } from '@middleware/not.found';
-import UsersRoutes from '@user/user.routes';
+/* eslint-disable no-console */
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import express, { Express, NextFunction, Request, Response } from 'express';
+import express, {
+  Express, NextFunction, Request, Response,
+} from 'express';
 import helmet from 'helmet';
+import connetction from './config/db.connet';
+import { errorHandler } from './middleware/error';
+import { notFoundHandler } from './middleware/not.found';
+import UsersRoutes from './user/user.routes';
 
 dotenv.config({});
 
 const app: Express = express();
 
-const PORT = process.env.PORT;
+const { PORT } = process.env;
 
 app.use(helmet());
 app.use(cors());
@@ -37,8 +40,11 @@ app.use(notFoundHandler);
 // DB Connection
 connetction();
 
-app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
-  res.json({ message: error });
+app.use((error: unknown, req: Request, res: Response) => {
+  res.status(500).json({
+    success: false,
+    error: "Something went wrong ;'(",
+  });
 });
 
 app.listen(PORT, () => {

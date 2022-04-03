@@ -10,7 +10,7 @@
     "test": "jest --coverage --maxWorkers=4",
     "eslint": "eslint src/**/*.ts --fix .",
     "prettier": "prettier --write src/",
-    "deploy": "docker build -t admin_portal . --build-arg STAGE=production &&  docker run -it -d --rm -p 3000:3000 inc_mgt_client",
+    "deploy": "docker build -t inc_mgt_client . --build-arg STAGE=production &&  docker run -it -d --rm -p 3000:3000 inc_mgt_client",
     "prepare": "cd .. && husky install",
     "lint:staged": "lint-staged"
   },
@@ -83,8 +83,7 @@
   "lint-staged": {
     "**/*.{ts,tsx}": [
       "prettier --write",
-      "eslint --fix",
-      "jest --bail --findRelatedTests"
+      "eslint --fix"
     ],
     "**/*.{json,ts,tsx,html,css,scss}": [
       "prettier --write"

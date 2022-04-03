@@ -28,8 +28,8 @@ const nextAuthOptions = (req, res): NextAuthOptions => ({
           });
 
           const result = await response.json();
-          if (result.token) {
-            return result;
+          if (result.data) {
+            return result.data;
           }
           return null;
         };

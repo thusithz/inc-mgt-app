@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material';
-import { Theme, alpha } from '@mui/material/styles';
+import { Theme } from '@mui/material/styles';
 
 declare module '@mui/material/styles/createPalette' {
   interface CommonColors {

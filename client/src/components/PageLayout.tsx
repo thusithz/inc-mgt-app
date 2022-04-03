@@ -12,11 +12,12 @@ import List from '@mui/material/List';
 
 import menus from '@config/menus';
 import { makeStyles } from '@utils/makeStyles';
+import routes from '@config/routes';
+
 import NavMenu from './SideBar/NavMenu';
 
 import Wrapper from './Wrapper';
 import ProfileItem from './SideBar/ProfileItem';
-import Error from './ErrorBoundary';
 
 const drawerWidth = 121;
 
@@ -110,53 +111,54 @@ const PageLayout: FC<Props> = ({ children, title = '', contentStyles }) => {
   const [open] = useState(true);
 
   return (
-    <Error>
-      <Wrapper>
-        <div className={classes.root}>
-          <CssBaseline />
-          <AppBar position='fixed' className={classes.appBar}>
-            <StyledToolbar>
-              <div className={classes.toolbarRow}>
-                <div>
-                  <Typography className={classes.title} variant='h6' noWrap>
-                    {title}
-                  </Typography>
-                </div>
+    <Wrapper>
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppBar position='fixed' className={classes.appBar}>
+          <StyledToolbar>
+            <div className={classes.toolbarRow}>
+              <div>
+                <Typography className={classes.title} variant='h6' noWrap>
+                  {title}
+                </Typography>
               </div>
-            </StyledToolbar>
-          </AppBar>
-          <Drawer
-            variant='permanent'
-            className={cx(classes.drawer, {
-              [classes.drawerOpen]: open,
-            })}
-            classes={{
-              paper: classes.drawerOpen,
-            }}
-            ModalProps={{
-              keepMounted: true,
-            }}
-          >
-            <div className={classes.toolbar}>
-              <div className={classes.brandContainer}>Inc Mgt</div>
             </div>
+          </StyledToolbar>
+        </AppBar>
+        <Drawer
+          variant='permanent'
+          className={cx(classes.drawer, {
+            [classes.drawerOpen]: open,
+          })}
+          classes={{
+            paper: classes.drawerOpen,
+          }}
+          ModalProps={{
+            keepMounted: true,
+          }}
+        >
+          <div className={classes.toolbar}>
+            <div className={classes.brandContainer}>
+              {' '}
+              <a href={routes.HOME}>Inc Mgt</a>
+            </div>
+          </div>
 
-            <List className={classes.navmenu}>
-              {menus.map((menu, index) => (
-                <NavMenu key={index} menu={menu} currentPath={router.asPath} />
-              ))}
-            </List>
-            <div style={{ marginTop: 'auto' }}>
-              <ProfileItem />
-            </div>
-          </Drawer>
-          <main className={cx({ [classes.content]: true, [contentStyles]: true })}>
-            <div className={classes.toolbar} />
-            {children}
-          </main>
-        </div>
-      </Wrapper>
-    </Error>
+          <List className={classes.navmenu}>
+            {menus.map((menu, index) => (
+              <NavMenu key={index} menu={menu} currentPath={router.asPath} />
+            ))}
+          </List>
+          <div style={{ marginTop: 'auto' }}>
+            <ProfileItem />
+          </div>
+        </Drawer>
+        <main className={cx({ [classes.content]: true, [contentStyles]: true })}>
+          <div className={classes.toolbar} />
+          {children}
+        </main>
+      </div>
+    </Wrapper>
   );
 };
 

@@ -1,6 +1,7 @@
+import type { NextPageContext } from 'next';
 import { Box, Button, Grid, Typography } from '@mui/material';
 
-import { signIn, getCsrfToken } from 'next-auth/react';
+import { signIn, getSession } from 'next-auth/react';
 import { Formik, Field, FieldProps } from 'formik';
 import { useRouter } from 'next/router';
 import { useTheme } from '@mui/material/styles';
@@ -9,6 +10,7 @@ import Wrapper from '@components/Wrapper';
 import { FormikMuiTextField } from '@ui-components/FormikMaterialUI/FormikMaterialUi';
 
 import loginSchema from '@utils/schema/loginSchema';
+import routes from '@config/routes';
 
 export default function SignIn() {
   const theme = useTheme();
@@ -23,7 +25,7 @@ export default function SignIn() {
         }}
       >
         <Formik
-          initialValues={{ email: '', password: '', tenantKey: '' }}
+          initialValues={{ email: '', password: '' }}
           validationSchema={loginSchema}
           onSubmit={async (values, { setSubmitting }) => {
             const res = await signIn('credentials', {
@@ -72,22 +74,41 @@ export default function SignIn() {
                     </Typography>
                   </Grid>
                   <Grid item>
-                    <Field name='email' type='email'>
+                    <Field name='email'>
                       {(field: FieldProps) => (
-                        <FormikMuiTextField {...field} fullWidth variant='standard' label='Email' />
+                        <FormikMuiTextField
+                          {...field}
+                          fullWidth
+                          variant='standard'
+                          type='email'
+                          label='Email'
+                        />
                       )}
                     </Field>
                   </Grid>
                   <Grid item>
-                    <Field name='password' type='password'>
+                    <Field name='password'>
                       {(field: FieldProps) => (
-                        <FormikMuiTextField {...field} fullWidth variant='standard' label='Password' />
+                        <FormikMuiTextField
+                          {...field}
+                          fullWidth
+                          variant='standard'
+                          type='password'
+                          label='Password'
+                        />
                       )}
                     </Field>
                   </Grid>
                   <Grid item justifyItems='center'>
                     <Button type='submit'>{formik.isSubmitting ? 'Please wait...' : 'Sign In'}</Button>
                   </Grid>
+                  <Box
+                    sx={{
+                      fontSize: theme.spacing(1.2),
+                    }}
+                  >
+                    <a href={routes.SIGN_UP}>Sign Up</a>
+                  </Box>
                 </Grid>
               </Box>
             </form>
@@ -98,10 +119,17 @@ export default function SignIn() {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: NextPageContext) {
+  const session = await getSession(context);
+  if (session) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: routes.HOME,
+      },
+    };
+  }
   return {
-    props: {
-      csrfToken: await getCsrfToken(context),
-    },
+    props: {},
   };
 }
