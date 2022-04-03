@@ -15,7 +15,7 @@ export default () => {
         return console.info(`Successfully connected to ${db}`);
       })
       .catch((err) => {
-        console.error(`Error connecting to database :`, err);
+        console.error('Error connecting to database :', err);
         return process.exit(1);
       });
   };

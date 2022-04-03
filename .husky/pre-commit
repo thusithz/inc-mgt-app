@@ -1,8 +1,15 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+cd ./client
 
-cd ./server
+echo 'Standardizing client app before committing' 
+
+npm run typecheck || ( echo 'Correct the types !!!' false ) 
+
+npm run lint:staged
+
+cd ../server
 
 echo 'Standardizing server app before committing'
 

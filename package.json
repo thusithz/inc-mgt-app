@@ -1,20 +1,21 @@
 {
-	"private": true,
-	"workspaces": {
-		"packages": [
-			"server"
-		]
-	},
-	"scripts": {
-		"dev": "lerna run --parallel dev",
-		"build": "lerna run build",
-		"serve": "lerna run --parallel serve",
-		"clean": "lerna run --parallel clean",
-		"prepare": "lerna run npm"
-	},
-	"devDependencies": {
-		"@types/debug": "^4.1.7",
-		"debug": "^4.3.4",
-		"lerna": "3.22.1"
-	}
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "client",
+      "server"
+    ]
+  },
+  "scripts": {
+    "dev": "lerna run --parallel dev",
+    "build": "lerna run build",
+    "serve": "lerna run --parallel serve",
+    "clean": "lerna run --parallel clean",
+    "prepare": "lerna run npm"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.7",
+    "debug": "^4.3.4",
+    "lerna": "3.22.1"
+  }
 }

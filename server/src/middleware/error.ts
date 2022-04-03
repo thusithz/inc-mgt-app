@@ -5,7 +5,7 @@ export const errorHandler = (
   error: HttpException,
   request: Request,
   response: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const status = error.statusCode || error.status || 500;
 
