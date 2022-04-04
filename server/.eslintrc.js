@@ -2,8 +2,8 @@ module.exports = {
     root: true,
     plugins: ['@typescript-eslint'],
     extends: [
-      "eslint:recommended",                                 // new
-      "plugin:@typescript-eslint/recommended",              // new
+      "eslint:recommended",                                 
+      "plugin:@typescript-eslint/recommended",
       "airbnb",
       "airbnb-typescript"
     ],

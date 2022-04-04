@@ -5,6 +5,7 @@
     "start": "tsc && node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/src/app.js",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' -r ts-node/register/transpile-only -r tsconfig-paths/register src/app.ts",
     "build": "tsc --noEmit",
+    "deploy": "docker-compose up -d",
     "lint:staged": "lint-staged",
     "typecheck": "tsc --noEmit",
     "test": "jest --coverage --maxWorkers=4",

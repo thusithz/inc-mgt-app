@@ -1,6 +1,7 @@
 import API_ROUTES from '@config/apiRoutes';
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { incApi } from 'src/helpers/http';
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -19,17 +20,16 @@ const nextAuthOptions = (req, res): NextAuthOptions => ({
       },
       authorize: async (credentials) => {
         const user = async () => {
-          const response = await fetch(`${process.env.BASE_URL}${API_ROUTES.USER.LOGIN}`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(credentials),
-          });
-
-          const result = await response.json();
-          if (result.data) {
-            return result.data;
+          let loginRes;
+          try {
+            loginRes = await incApi.post(`${process.env.BASE_URL}${API_ROUTES.USER.LOGIN}`, {
+              ...credentials,
+            });
+          } catch (e) {
+            loginRes = e?.data;
+          }
+          if (loginRes.data.success) {
+            return loginRes.data.data;
           }
           return null;
         };
@@ -53,6 +53,7 @@ const nextAuthOptions = (req, res): NextAuthOptions => ({
           ...token,
         };
       }
+      console.log('cusSession', cusSession);
       return cusSession;
     },
     async jwt({ token, user, account }) {

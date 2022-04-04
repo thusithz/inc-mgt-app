@@ -11,6 +11,7 @@
     "build": "lerna run build",
     "serve": "lerna run --parallel serve",
     "clean": "lerna run --parallel clean",
+    "deploy": "lerna run --parallel deploy",
     "prepare": "lerna run npm"
   },
   "devDependencies": {

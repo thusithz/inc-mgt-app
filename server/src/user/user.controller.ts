@@ -15,7 +15,6 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
       errors: errors.array(),
     });
   }
-
   const {
     username, email, password, department,
   } = req.body;
@@ -54,7 +53,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
     return next(err);
   }
 
-  res.status(201).json({ success: true, data: { userId: createdUser.id, email: createdUser.email } });
+  return res.status(201).json({ success: true, data: { userId: createdUser.id, email: createdUser.email } });
 };
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
@@ -111,5 +110,21 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       email: existingUser.email,
       token,
     },
+  });
+};
+
+export const userList = async (req: Request, res: Response, next: NextFunction) => {
+  let users;
+  try {
+    users = await User.find({}, '-password');
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: 'Fetching data failed, please try again later.',
+    });
+  }
+  res.json({
+    success: true,
+    data: users,
   });
 };

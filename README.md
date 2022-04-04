@@ -27,8 +27,14 @@ Finally,
 npm run dev
 ```
 
+## Deploy Docker Images
+
+for run all docker images
+
+> `npm run deploy`
+
 Lerna will start all your projects parallelly and open your browser.
 
 - http://localhost:3000/ (Client)
-- http://localhost:500/ (Server)
+- http://localhost:9000/ (Server)
 

@@ -34,11 +34,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.use('/api/user', UsersRoutes);
 
-app.use(errorHandler);
 app.use(notFoundHandler);
-
-// DB Connection
-connetction();
+app.use(errorHandler);
 
 app.use((error: unknown, req: Request, res: Response) => {
   res.status(500).json({
@@ -46,6 +43,9 @@ app.use((error: unknown, req: Request, res: Response) => {
     error: "Something went wrong ;'(",
   });
 });
+
+// DB Connection
+connetction();
 
 app.listen(PORT, () => {
   console.log(`inc mgt server is running on PORT ${PORT}`);

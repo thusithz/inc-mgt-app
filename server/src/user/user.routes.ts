@@ -5,7 +5,7 @@ import * as userController from './user.controller';
 
 const router = express.Router();
 
-router.post('/list', Auth, userController.signup);
+router.get('/list', Auth, userController.userList);
 
 router.post(
   '/signup',
